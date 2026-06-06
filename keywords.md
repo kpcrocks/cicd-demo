@@ -116,3 +116,64 @@ The command that starts a container from an image. `-p 8080:8080` maps port 8080
 
 **Docker Desktop**
 The app you install on your laptop to run Docker locally. Gives you the `docker` command and a UI to manage containers and images.
+
+---
+
+## GitHub Actions
+
+**workflow**
+A `.yml` file in `.github/workflows/` that defines automation. GitHub reads it and runs it when the trigger event happens.
+
+**trigger (`on:`)**
+The event that starts a workflow. Common triggers: `push` (code pushed to a branch) and `pull_request` (a PR opened or updated).
+
+**job**
+A group of steps that runs on one isolated runner. Jobs run in parallel by default unless you declare dependencies with `needs`.
+
+**runner**
+A fresh virtual machine GitHub boots for each job. Starts empty every time — no code, no tools — you install what you need in the steps. Uses `ubuntu-latest` for Linux.
+
+**step**
+A single unit of work inside a job. Either a shell command (`run:`) or a pre-built Action (`uses:`).
+
+**Action**
+A reusable plugin you pull into a step with `uses:`. Examples: `actions/checkout` (clones your repo), `actions/setup-go` (installs Go), `docker/login-action` (logs into a registry).
+
+**`uses`**
+Runs a pre-built Action in a step. Example: `uses: actions/checkout@v4`.
+
+**`run`**
+Runs a raw shell command on the runner. Example: `run: go test ./...`.
+
+**`needs`**
+Declares a dependency between jobs. A job with `needs: [lint, test]` won't start until both lint and test finish successfully.
+
+**`if`**
+A condition that controls whether a job runs at all. Example: `if: github.event_name == 'push' && github.ref == 'refs/heads/main'` skips the job on PRs.
+
+**`permissions`**
+Explicitly grants the `GITHUB_TOKEN` access it needs for a job. By default the token has minimal permissions — you add `packages: write` to allow pushing Docker images.
+
+**`GITHUB_TOKEN`**
+A temporary token GitHub auto-creates for each workflow run. Has limited permissions by default (least privilege). Used to authenticate with GitHub services like ghcr.io.
+
+**ghcr.io (GitHub Container Registry)**
+GitHub's built-in Docker image registry. Images pushed here are stored under `ghcr.io/<owner>/<repo>:tag`. Access control follows your repo's visibility settings.
+
+**cache key**
+A fingerprint used to identify a cache. For Go modules, the cache key is based on `go.sum` — if the file hasn't changed, the cached modules are reused instead of re-downloaded.
+
+**`go.sum`**
+A file Go maintains that lists every external dependency and its exact version hash. Used as the cache key fingerprint. Only exists if your project has external dependencies.
+
+**least privilege**
+A security principle: give a token or process only the permissions it actually needs, nothing more. GitHub Actions follows this — `GITHUB_TOKEN` starts minimal and you opt in to more.
+
+**parallel jobs**
+Jobs that run at the same time because they have no `needs` dependency between them. Lint and test run in parallel — each gets its own runner and they race independently.
+
+**PR (pull request)**
+A proposal to merge one branch into another. Opens a GitHub page showing the diff. Reviewers leave comments or request changes. The author pushes more commits to the same branch to address feedback. Merged when approved.
+
+**cache hit / cache miss**
+A cache hit means the key matched and the cached data was restored. A cache miss means no match was found and everything was downloaded fresh. The first run is always a miss; subsequent runs are hits if nothing changed.

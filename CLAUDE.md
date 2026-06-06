@@ -73,19 +73,18 @@ docker run -p 8080:8080 cicd-demo
 - [x] Step 5: Write Dockerfile
 - [x] Step 6: Test Docker locally
 - [x] Step 7: Push to GitHub
+- [x] Step 8: Write CI workflow (lint, test, docker build, docker push)
+- [x] Step 9: Fix GITHUB_TOKEN permissions for ghcr.io push
 
-## Day 1 complete. Starting on Day 2.
+## Day 2 complete. Starting on Day 3 (Sunday).
 
-## What's next (Day 2)
+## What's next (Day 3)
 
-Build the GitHub Actions CI pipeline inside `.github/workflows/`. Each step below is a separate job in the workflow:
+Build the release workflow and a composite action:
 
-1. **Lint** — run `go vet ./...` to catch code issues
-2. **Test** — run `go test ./...` to verify all tests pass
-3. **Docker build** — build the image to confirm it compiles
-4. **Docker push** — push the image to GitHub Container Registry (ghcr.io)
-
-The workflow triggers on every push and every pull request to main.
+1. **Release workflow** — trigger on a git tag (e.g. `v1.0.0`), build and push a versioned Docker image, create a GitHub Release
+2. **Composite action** — extract the repeated "checkout + setup Go" steps into a reusable action so jobs don't repeat themselves
+3. **README** — document the project, how to run it, and how the pipeline works
 
 ## Teaching approach
 
