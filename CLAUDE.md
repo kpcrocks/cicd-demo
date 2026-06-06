@@ -45,11 +45,24 @@ go run main.go
 go test ./...
 ```
 
+## Build and run with Docker
+
+```bash
+docker build -t cicd-demo .
+docker run -p 8080:8080 cicd-demo
+```
+
 ## Key decisions
 
 - Handlers are extracted as named functions (not inline in main) so they can be unit tested directly
 - Uses only Go standard library — no external dependencies
 - Tests use `net/http/httptest` to call handlers without starting a real server
+
+## GitHub
+
+- Repo: https://github.com/kpcrocks/cicd-demo
+- Branch: main
+- Docker image name: cicd-demo
 
 ## Current progress
 
@@ -59,4 +72,25 @@ go test ./...
 - [x] Step 4: Write unit tests (main_test.go)
 - [x] Step 5: Write Dockerfile
 - [x] Step 6: Test Docker locally
-- [ ] Step 7: Push to GitHub
+- [x] Step 7: Push to GitHub
+
+## Day 1 complete. Starting on Day 2.
+
+## What's next (Day 2)
+
+Build the GitHub Actions CI pipeline inside `.github/workflows/`. Each step below is a separate job in the workflow:
+
+1. **Lint** — run `go vet ./...` to catch code issues
+2. **Test** — run `go test ./...` to verify all tests pass
+3. **Docker build** — build the image to confirm it compiles
+4. **Docker push** — push the image to GitHub Container Registry (ghcr.io)
+
+The workflow triggers on every push and every pull request to main.
+
+## Teaching approach
+
+- Tommy is new to everything — always explain concepts before writing code
+- Walk through what you're about to write first, then write it
+- After writing, explain line by line if asked
+- Keep a keywords.md file in this project — add new terms as they come up
+- Update CLAUDE.md progress checklist as steps are completed
