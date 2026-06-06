@@ -1,0 +1,118 @@
+# Keywords
+
+A running glossary of terms encountered during this project.
+
+---
+
+## Go
+
+**package**
+A folder of Go files that belong together. Every file declares which package it belongs to with `package <name>` at the top. Packages are how Go organizes and reuses code.
+
+**module**
+A collection of packages with a name and a version. Defined by `go.mod`. Think of it like a project — it tracks your code and its dependencies.
+
+**go.mod**
+The file that defines your module name and Go version. Similar to `package.json` in Node or `requirements.txt` in Python.
+
+**struct**
+A data type you define yourself that groups related fields together. Like a blueprint for an object. Example: `HealthResponse` has one field — `Status`.
+
+**struct tag**
+The backtick annotation on a struct field (e.g. `` `json:"status"` ``). Tells encoders/decoders how to name the field. Without it, JSON would use the capitalized Go field name.
+
+**handler**
+A function that receives an HTTP request and writes a response. In Go, every handler takes two arguments: a `ResponseWriter` (to write the response) and a `*Request` (the incoming request).
+
+**binary**
+The compiled output of your Go code — a single executable file with no dependencies. You run it directly. Go compiles to a binary, unlike Python or Node which need a runtime installed.
+
+**standard library**
+Packages that ship with Go — no installation needed. Examples used in this project: `net/http`, `encoding/json`, `log`.
+
+**pointer (`*`)**
+A reference to a value in memory rather than a copy of it. `*http.Request` means "a pointer to an http.Request." Used when you want a function to work with the original value, not a copy.
+
+**`[]byte`**
+A slice (list) of bytes. Strings in Go can't be written directly to a network connection — they need to be converted to bytes first. `[]byte("Hello")` does that conversion.
+
+---
+
+## Testing
+
+**unit test**
+A test that checks one small piece of code in isolation — no network, no database, no server. Fast and reliable. Your `main_test.go` contains unit tests.
+
+**integration test**
+A test that checks how multiple pieces work together — e.g. starting a real server and making a real HTTP request. Slower and more fragile than unit tests.
+
+**`testing.T`**
+The type passed into every test function. Gives you methods like `t.Errorf()` to report failures without stopping the test, or `t.Fatalf()` to report and stop immediately.
+
+**`httptest`**
+A Go standard library package (`net/http/httptest`) that lets you test HTTP handlers without starting a real server. Provides `NewRequest` and `NewRecorder`.
+
+**`httptest.NewRequest`**
+Creates a fake incoming HTTP request. Takes a method (`GET`, `POST`, etc.), a URL path, and an optional body.
+
+**`httptest.NewRecorder`**
+Creates a fake `ResponseWriter` that records everything the handler writes — status code, headers, body. You inspect it after calling the handler.
+
+**Arrange / Act / Assert**
+The three steps of a test: set up inputs, call the real code, check the output.
+
+---
+
+## Docker
+
+**Docker image**
+A frozen, packaged snapshot of your app and its environment. You build it once and run it anywhere. Ships as a single artifact.
+
+**container**
+A running instance of a Docker image. Like a lightweight virtual machine — isolated from the rest of your system.
+
+**Dockerfile**
+A recipe for building a Docker image. A list of instructions that Docker executes top to bottom.
+
+**multi-stage build**
+A Dockerfile technique that uses multiple `FROM` stages. Earlier stages can compile or build things; only the final stage ends up in the image. Used to keep the final image small.
+
+**alpine**
+A minimal Linux distribution (~5MB). Popular as a base image in Docker because it's tiny and has a small attack surface compared to full distros like Ubuntu.
+
+**toolchain**
+Everything needed to compile code — compiler, standard library, build tools. In Go, the toolchain is large (~600MB) but only needed at build time, not runtime.
+
+**base image**
+The starting point for a Docker stage, specified with `FROM`. Everything you do in that stage builds on top of it.
+
+---
+
+## CI/CD
+
+**CI (Continuous Integration)**
+Automatically running checks (tests, linting, builds) every time code is pushed. Catches bugs before they reach production.
+
+**CD (Continuous Delivery/Deployment)**
+Automatically packaging and shipping code after CI passes. Delivers the tested artifact to a registry or server.
+
+**pipeline**
+The sequence of automated steps that run on every push — lint, test, build, deploy. Defined in a config file (e.g. GitHub Actions YAML).
+
+**GitHub Actions**
+GitHub's built-in CI/CD tool. You define workflows in `.github/workflows/`. Triggered by events like pushing code or opening a pull request.
+
+**artifact**
+The output of a build step that gets passed along the pipeline. In this project, the Docker image is the artifact.
+
+**registry**
+A storage warehouse for Docker images. Like GitHub but for images. GitHub Container Registry (ghcr.io) is where your pipeline will push images to in a later step.
+
+**`docker build`**
+The command that reads your Dockerfile and builds an image from it. `-t cicd-demo` tags (names) the image so you can reference it later.
+
+**`docker run`**
+The command that starts a container from an image. `-p 8080:8080` maps port 8080 on your laptop to port 8080 inside the container.
+
+**Docker Desktop**
+The app you install on your laptop to run Docker locally. Gives you the `docker` command and a UI to manage containers and images.
