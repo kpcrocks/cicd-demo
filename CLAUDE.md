@@ -76,7 +76,7 @@ docker run -p 8080:8080 cicd-demo
 - [x] Step 8: Write CI workflow (lint, test, docker build, docker push)
 - [x] Step 9: Fix GITHUB_TOKEN permissions for ghcr.io push
 
-## Day 2 complete. Starting on Day 3 (Sunday).
+## Day 2 complete. Day 3 pending.
 
 ## What's next (Day 3)
 
@@ -85,6 +85,25 @@ Build the release workflow and a composite action:
 1. **Release workflow** — trigger on a git tag (e.g. `v1.0.0`), build and push a versioned Docker image, create a GitHub Release
 2. **Composite action** — extract the repeated "checkout + setup Go" steps into a reusable action so jobs don't repeat themselves
 3. **README** — document the project, how to run it, and how the pipeline works
+
+## Interview context
+
+Tommy has applied for and has an upcoming interview for:
+**Hardware Infrastructure & CI/CD Engineer at Efficient (San Jose / Pittsburgh / Austin)**
+
+- Efficient builds ultra-low-power processors; their internal test platform is called **ATLAS** (hardware regression testing and performance profiling infrastructure)
+- The role combines hardware test infrastructure ownership with CI/CD pipeline ownership across 3 teams
+- This cicd-demo project is directly relevant — it demonstrates Go, Docker, GitHub Actions, release workflows, and composite actions
+
+Interview prep answers are saved locally in `interview.txt` (gitignored). All four screening questions are drafted:
+1. Tell me about yourself
+2. Why this role / why this company
+3. Challenging technical problem (USB enumeration story)
+4. What are you weakest on in this JD
+
+**First interview is a 30-minute intro/screening call.** Technical rounds follow.
+
+When resuming interview prep: read `interview.txt` first, then help Tommy review and tighten the answers — especially Q1 which may be too long.
 
 ## Teaching approach
 
