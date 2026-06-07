@@ -1,0 +1,13 @@
+name: 'Setup Go'
+description: 'Checkout code and set up Go'
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.22'
