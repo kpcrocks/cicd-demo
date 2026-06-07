@@ -1,12 +1,9 @@
 name: 'Setup Go'
-description: 'Checkout code and set up Go'
+description: 'Set up Go — run actions/checkout before calling this'
 
 runs:
   using: composite
   steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
     - name: Set up Go
       uses: actions/setup-go@v5
       with:

@@ -12,7 +12,10 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
         uses: ./.github/actions/setup
 
       - name: Run go vet
@@ -21,7 +24,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
         uses: ./.github/actions/setup
 
       - name: Run tests
@@ -31,7 +37,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [lint, test]
     steps:
-      - name: Setup
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
         uses: ./.github/actions/setup
 
       - name: Build Docker image
