@@ -76,15 +76,13 @@ docker run -p 8080:8080 cicd-demo
 - [x] Step 8: Write CI workflow (lint, test, docker build, docker push)
 - [x] Step 9: Fix GITHUB_TOKEN permissions for ghcr.io push
 
-## Day 2 complete. Day 3 pending.
+## Day 2 complete. Day 3 complete.
 
-## What's next (Day 3)
+## What was completed on Day 3
 
-Build the release workflow and a composite action:
-
-1. **Release workflow** — trigger on a git tag (e.g. `v1.0.0`), build and push a versioned Docker image, create a GitHub Release
-2. **Composite action** — extract the repeated "checkout + setup Go" steps into a reusable action so jobs don't repeat themselves
-3. **README** — document the project, how to run it, and how the pipeline works
+1. **Composite action** — `.github/actions/setup/action.yml` bundles Go setup into one reusable step. Checkout must stay outside it — the runner needs the repo on disk before it can load a local action.
+2. **Release workflow** — `.github/workflows/release.yml` triggers on version tags (`v*`), pushes a versioned Docker image to ghcr.io, and creates a GitHub Release with auto-generated notes.
+3. **README** — documents the project, endpoints, how to run locally, and how the pipeline works.
 
 ## Interview context
 

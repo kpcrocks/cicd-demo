@@ -177,3 +177,41 @@ A proposal to merge one branch into another. Opens a GitHub page showing the dif
 
 **cache hit / cache miss**
 A cache hit means the key matched and the cached data was restored. A cache miss means no match was found and everything was downloaded fresh. The first run is always a miss; subsequent runs are hits if nothing changed.
+
+---
+
+## Git
+
+**git tag**
+A human-readable label attached to a specific commit. Unlike a branch, a tag doesn't move — it permanently marks that point in history. Used to name releases (e.g. `v1.0.0`).
+
+**semantic versioning (semver)**
+A versioning convention: `major.minor.patch`. Patch = bug fix, minor = new feature (backwards compatible), major = breaking change. Example: `v1.2.3`.
+
+**`git tag v1.0.0`**
+Creates a tag locally on your current commit. Does not push it to GitHub — that requires a separate command.
+
+**`git push origin v1.0.0`**
+Pushes just the tag to GitHub. Completely separate from pushing commits. This is what triggers the release workflow.
+
+---
+
+## GitHub Actions (continued)
+
+**composite action**
+A reusable bundle of steps stored in `.github/actions/<name>/action.yml`. Jobs reference it with `uses: ./.github/actions/<name>`. Eliminates copy-paste duplication across jobs.
+
+**`using: composite`**
+The declaration inside an `action.yml` that marks it as a composite action (as opposed to a Docker or JavaScript action).
+
+**`github.ref_name`**
+A built-in GitHub Actions variable that contains the name of the branch or tag that triggered the workflow. When triggered by a tag push, it equals the tag name (e.g. `v1.0.0`).
+
+**`contents: write`**
+A permission that allows a workflow to create GitHub Releases, write to the repo, etc. Must be explicitly granted — GitHub tokens start with minimal permissions.
+
+**GitHub Release**
+A page on GitHub under the "Releases" tab tied to a specific tag. Shows the version, release notes, and any attached assets. Created automatically by the release workflow using `softprops/action-gh-release`.
+
+**`generate_release_notes: true`**
+A setting on the `softprops/action-gh-release` action that automatically pulls commit messages since the last tag and uses them as the release notes. No manual writing needed.
