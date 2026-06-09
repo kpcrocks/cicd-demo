@@ -1,0 +1,76 @@
+TRIGGER
+───────
+push or PR to main
+        │
+        ▼
+┌─────────────────────────────────────────┐
+│             PARALLEL JOBS               │
+│                                         │
+│  ┌──────────────┐   ┌───────────────┐   │
+│  │     lint     │   │     test      │   │
+│  │──────────────│   │───────────────│   │
+│  │ 1. checkout  │   │ 1. checkout   │   │
+│  │ 2. setup Go  │   │ 2. setup Go   │   │
+│  │ 3. go vet    │   │ 3. go test    │   │
+│  └──────┬───────┘   └──────┬────────┘   │
+│         │                  │            │
+└─────────┼──────────────────┼────────────┘
+          │   both must pass │
+          └────────┬─────────┘
+                   │
+                   ▼
+        ┌─────────────────────┐
+        │    docker-build     │
+        │─────────────────────│
+        │ needs: [lint, test] │
+        │─────────────────────│
+        │ 1. checkout         │
+        │ 2. docker build .   │
+        └──────────┬──────────┘
+                   │
+                   │  push to main only
+                   │  skipped on PRs ──────────► (stop)
+                   │
+                   ▼
+        ┌─────────────────────┐
+        │    docker-push      │
+        │─────────────────────│
+        │ needs: [docker-     │
+        │        build]       │
+        │─────────────────────│
+        │ 1. checkout         │
+        │ 2. login to ghcr.io │
+        │ 3. docker build     │
+        │ 4. docker push      │
+        └──────────┬──────────┘
+                   │
+                   ▼
+        ┌─────────────────────┐
+        │  ghcr.io/kpcrocks/  │
+        │  cicd-demo:latest   │
+        └─────────────────────┘
+
+
+RELEASE WORKFLOW  (triggered separately)
+─────────────────────────────────────────
+
+git tag v1.0.0 + git push --tags
+        │
+        ▼
+┌─────────────────────┐
+│    release job      │
+│─────────────────────│
+│ 1. checkout         │
+│ 2. login to ghcr.io │
+│ 3. docker build     │
+│ 4. docker push      │
+│    :v1.0.0          │
+│ 5. create GitHub    │
+│    Release          │
+└──────────┬──────────┘
+           │
+     ┌─────┴──────┐
+     ▼            ▼
+ghcr.io       GitHub Releases
+:v1.0.0       v1.0.0 page
+:latest       + release notes
